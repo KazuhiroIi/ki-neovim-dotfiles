@@ -4,7 +4,7 @@ return {
     config = function()
       require("vscode").setup({
         style = "dark",
-        transparent = false,
+        transparent = true,
       })
       vim.cmd.colorscheme("vscode")
     end,
