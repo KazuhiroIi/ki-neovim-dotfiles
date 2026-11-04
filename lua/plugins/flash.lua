@@ -4,45 +4,79 @@ return {
   ---@type Flash.Config
   opts = {},
   keys = {
+    -- Migemo-enhanced jump: romaji input is converted to Japanese regex
     {
       "s",
-      mode = { "n", "x", "o" },
       function()
-        require("flash").jump()
+        local ok, ext = pcall(require, "cmigemo.ext.flash")
+        if ok then
+          ext.jump()
+        else
+          require("flash").jump()
+        end
       end,
-      desc = "Flash",
+      mode = { "n", "x", "o" },
+      desc = "Flash: Migemo Jump",
     },
+    -- Treesitter node selection (no query input)
     {
       "S",
-      mode = { "n", "x", "o" },
       function()
         require("flash").treesitter()
       end,
-      desc = "Flash Treesitter",
+      mode = { "n", "x", "o" },
+      desc = "Flash: Treesitter Jump",
     },
+    -- Remote migemo operation: e.g. `yr` + romaji + label + `iw` yanks a
+    -- distant word, then the cursor returns to where it was
     {
       "r",
-      mode = "o",
       function()
-        require("flash").remote()
+        local ok, ext = pcall(require, "cmigemo.ext.flash")
+        if ok then
+          ext.remote()
+        else
+          require("flash").remote()
+        end
       end,
-      desc = "Remote Flash",
+      mode = "o",
+      desc = "Flash: Migemo Remote",
     },
+    -- Migemo treesitter search: romaji query + label selects the syntax
+    -- node covering the match (matches via the migemo layer)
     {
       "R",
-      mode = { "o", "x" },
       function()
-        require("flash").treesitter_search()
+        local ok, ext = pcall(require, "cmigemo.ext.flash")
+        if ok then
+          ext.treesitter_search()
+        else
+          require("flash").treesitter_search()
+        end
       end,
-      desc = "Treesitter Search",
+      mode = { "o", "x" },
+      desc = "Flash: Migemo Treesitter Search",
     },
+    -- Toggle flash labels inside a regular / search
     {
       "<c-s>",
-      mode = { "c" },
       function()
         require("flash").toggle()
       end,
-      desc = "Toggle Flash Search",
+      mode = "c",
+      desc = "Flash: Toggle Flash Search",
+    },
+    -- Bunsetsu (phrase) jump using BudouX segmenter
+    {
+      "gb",
+      function()
+        local ok, ext = pcall(require, "cmigemo.ext.flash")
+        if ok then
+          ext.bunsetsu()
+        end
+      end,
+      mode = { "n", "x", "o" },
+      desc = "Flash: Bunsetsu Jump (BudouX)",
     },
   },
 }
