@@ -1,5 +1,8 @@
 return {
   "keaising/im-select.nvim",
+  cond = function()
+    return vim.fn.has("win32") == 0 -- disable on windows
+  end,
   config = function()
     require("im_select").setup({
       -- IM will be set to `default_im_select` in `normal` mode
